@@ -34,17 +34,6 @@ jobs:
         with:
           tflint_version: v0.47.0
 
-      - name: Init TFLint
-        run: tflint --init
-        env:
-          # https://github.com/terraform-linters/tflint/blob/master/docs/user-guide/plugins.md#avoiding-rate-limiting
-          GITHUB_TOKEN: ${{ github.token }}
-
-      - uses: terraform-linters/tflint-load-config-action@v0
-        with:
-          source-repo: aztfmods/shared-workflows
-          source-path: .github/workflows
-
       - name: Run TFLint
         run: tflint --recursive
 
@@ -68,19 +57,3 @@ jobs:
       - name: terraform fmt
         run: terraform fmt -check -recursive
         continue-on-error: false
-
-  fmt:
-    name: fmt
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: setup terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_wrapper: false
-
-      - name: terraform fmt
-        run: terraform fmt -check -recursive
-        continue-on-error: false
-
