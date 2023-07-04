@@ -43,7 +43,7 @@ jobs:
       - uses: terraform-linters/tflint-load-config-action@v1
         with:
           source-repo: aztfmods/shared-workflows
-          source-path: .github/workflows
+          source-path: '.github/workflows'
 
       - name: Run TFLint
         run: tflint --recursive
