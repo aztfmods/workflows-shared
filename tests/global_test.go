@@ -100,6 +100,14 @@ func TestReadmeNotEmpty(t *testing.T) {
 }
 
 func TestResourceTableHeaders(t *testing.T) {
+	testMarkdownTableHeaders(t, "Resources", []string{"Name", "Type"})
+}
+
+func TestInputsTableHeaders(t *testing.T) {
+	testMarkdownTableHeaders(t, "Inputs", []string{"Name", "Description", "Type", "Required"})
+}
+
+func testMarkdownTableHeaders(t *testing.T, section string, headers []string) {
 	readmePath := os.Getenv("README_PATH")
 	data, err := ioutil.ReadFile(readmePath)
 	if err != nil {
@@ -107,18 +115,27 @@ func TestResourceTableHeaders(t *testing.T) {
 	}
 
 	contents := string(data)
+	requiredSection := []string{"## " + section}
 
-	// Look for a table immediately after the ## Resources header
-	tablePattern := regexp.MustCompile(`(?s)## Resources\s*\n(\|.*\|\s*)+`)
-	tableLoc := tablePattern.FindStringIndex(contents)
-	if tableLoc == nil {
-		t.Fatalf("Failed: README.md does not contain a table immediately after the header: ## Resources")
-	}
+	for _, header := range requiredSection {
+		headerPattern := regexp.MustCompile("(?m)^" + regexp.QuoteMeta(header) + "$")
+		headerLoc := headerPattern.FindStringIndex(contents)
+		if headerLoc == nil {
+			t.Fatalf("Failed: README.md does not contain required header: %s", header)
+		}
 
-	// Extract the table and check the headers
-	tableContents := contents[tableLoc[0]:tableLoc[1]]
-	headerPattern := regexp.MustCompile(`\| Name \| Type \|`)
-	if !headerPattern.MatchString(tableContents) {
-		t.Fatalf("Failed: README.md does not contain the correct headers in the table after: ## Resources")
+		// Look for a table immediately after the header
+		tablePattern := regexp.MustCompile(`(?s)(?m)^## ` + section + `\s*\n\n\|.*\|\n\| :-- \| :-- \|\n(\|.*\|)*\n`)
+		tableLoc := tablePattern.FindStringIndex(contents)
+		if tableLoc == nil || tableLoc[0] != headerLoc[1] {
+			t.Fatalf("Failed: README.md does not contain a table immediately after the header: %s", header)
+		}
+
+		// Check the table headers
+		headerRowPattern := regexp.MustCompile(`(?m)\| ` + strings.Join(headers, " \\| ") + ` \|`)
+		headerRowLoc := headerRowPattern.FindStringIndex(contents[tableLoc[0]:tableLoc[1]])
+		if headerRowLoc == nil {
+			t.Fatalf("Failed: README.md does not contain the correct headers in the table after: %s", header)
+		}
 	}
 }
