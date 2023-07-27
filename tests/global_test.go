@@ -97,3 +97,30 @@ func TestReadmeNotEmpty(t *testing.T) {
 		t.Log("Success: README.md is not empty.")
 	}
 }
+
+func TestMarkdownTables(t *testing.T) {
+	readmePath := os.Getenv("README_PATH")
+	data, err := os.ReadFile(readmePath)
+	if err != nil {
+		t.Fatalf("Failed to load markdown file: %v", err)
+	}
+
+	contents := string(data)
+
+	tableRegex := regexp.MustCompile(`(?ms)(\|.+\|)(\n\|[-:\s]+\|)(\n(\|.+\|)*)`)
+	tableMatches := tableRegex.FindAllString(contents, -1)
+
+	for _, table := range tableMatches {
+		lines := strings.Split(table, "\n")
+		headers := strings.Split(strings.Trim(lines[0], "|"), "|")
+		for i, header := range headers {
+			headers[i] = strings.TrimSpace(header)
+		}
+
+		if headers[0] != "Name" || headers[1] != "Type" {
+			t.Errorf("Failed: Table headers do not match. Expected 'Name' and 'Type', got '%s' and '%s'", headers[0], headers[1])
+		} else {
+			t.Logf("Success: Table headers match 'Name' and 'Type'")
+		}
+	}
+}
