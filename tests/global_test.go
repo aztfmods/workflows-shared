@@ -54,3 +54,25 @@ func TestURLs(t *testing.T) {
 	}
 	wg.Wait()
 }
+
+func TestHeaders(t *testing.T) {
+	readmePath := os.Getenv("README_PATH")
+	data, err := os.ReadFile(readmePath)
+	if err != nil {
+		t.Fatalf("Failed to load markdown file: %v", err)
+	}
+
+	contents := string(data)
+	requiredHeaders := []string{
+		"## Features",
+		"## Goals",
+	}
+
+	for _, header := range requiredHeaders {
+		if !strings.Contains(contents, header) {
+			t.Errorf("README.md does not contain required header: %s", header)
+		} else {
+			t.Logf("Success: README.md contains required header: %s", header)
+		}
+	}
+}
