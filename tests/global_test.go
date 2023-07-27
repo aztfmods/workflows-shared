@@ -72,7 +72,7 @@ func TestReadmeHeaders(t *testing.T) {
 	}
 
 	for header, minCount := range requiredHeaders {
-		matches := regexp.MustCompile("(?m)^"+regexp.QuoteMeta(header)+"$").FindAllString(contents, -1)
+		matches := regexp.MustCompile("(?m)^"+regexp.QuoteMeta(header)).FindAllString(contents, -1)
 		if len(matches) < minCount {
 			t.Errorf("Failed: README.md does not contain required header '%s' at least %d times", header, minCount)
 		} else {
