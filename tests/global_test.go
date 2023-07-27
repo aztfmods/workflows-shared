@@ -155,37 +155,3 @@ func markdownTableHeaders(t *testing.T, header string, columns []string) {
 		}
 	}
 }
-
-// func TestMarkdownTableHeaders(t *testing.T, header string, columns []string) {
-//	readmePath := os.Getenv("README_PATH")
-//	data, err := os.ReadFile(readmePath)
-//	if err != nil {
-//		t.Fatalf("Failed to load markdown file: %v", err)
-//	}
-
-//	contents := string(data)
-//	requiredHeaders := []string{"## " + header}
-
-//	for _, requiredHeader := range requiredHeaders {
-//		headerPattern := regexp.MustCompile("(?m)^" + regexp.QuoteMeta(requiredHeader) + "\\s*$")
-//		headerLoc := headerPattern.FindStringIndex(contents)
-//		if headerLoc == nil {
-//			t.Fatalf("Failed: README.md does not contain required header: %s", requiredHeader)
-//		}
-
-//		// Look for a table immediately after the header
-//		tablePattern := regexp.MustCompile(`(?s)` + regexp.QuoteMeta(requiredHeader) + `(\s*\|.*\|)+\s*`)
-//		tableLoc := tablePattern.FindStringIndex(contents)
-//		if tableLoc == nil {
-//			t.Fatalf("Failed: README.md does not contain a table immediately after the header: %s", requiredHeader)
-//		}
-
-//		// Check the table headers
-//	columnHeaders := strings.Join(columns, " \\| ")
-//		headerRowPattern := regexp.MustCompile(`(?m)\| ` + columnHeaders + ` \|`)
-//		headerRowLoc := headerRowPattern.FindStringIndex(contents[tableLoc[0]:tableLoc[1]])
-//		if headerRowLoc == nil {
-//			t.Fatalf("Failed: README.md does not contain the correct headers in the table after: %s", requiredHeader)
-//		}
-//	}
-//}
