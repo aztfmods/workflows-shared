@@ -12,6 +12,15 @@ import (
 	"mvdan.cc/xurls/v2"
 )
 
+func TestMarkdown(t *testing.T) {
+    t.Run("URLs", TestURLs)
+    t.Run("Headers", TestReadmeHeaders)
+    t.Run("NotEmpty", TestReadmeNotEmpty)
+    t.Run("ResourceTableHeaders", TestResourceTableHeaders)
+    t.Run("InputsTableHeaders", TestInputsTableHeaders)
+    t.Run("OutputsTableHeaders", TestOutputsTableHeaders)
+}
+
 func TestURLs(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
 	data, err := os.ReadFile(readmePath)
