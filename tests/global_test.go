@@ -1,6 +1,7 @@
 package main
 
 import (
+	"regexp"
 	"net/http"
 	"net/url"
 	"os"
@@ -55,7 +56,7 @@ func TestURLs(t *testing.T) {
 	wg.Wait()
 }
 
-func TestHeaders(t *testing.T) {
+func TestReadmeHeaders(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
@@ -63,13 +64,12 @@ func TestHeaders(t *testing.T) {
 	}
 
 	contents := string(data)
-	requiredHeaders := []string{
-		"## Features",
-		"## Goals",
-	}
+
+	requiredHeaders := []string{"## Goals", "## Features"}
 
 	for _, header := range requiredHeaders {
-		if !strings.Contains(contents, header) {
+		match, _ := regexp.MatchString(header, contents)
+		if !match {
 			t.Errorf("README.md does not contain required header: %s", header)
 		} else {
 			t.Logf("Success: README.md contains required header: %s", header)
