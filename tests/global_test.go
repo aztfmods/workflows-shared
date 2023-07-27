@@ -12,7 +12,7 @@ import (
 )
 
 func TestURLs(t *testing.T) {
-	data, err := os.ReadFile("../README.md")
+	data, err := os.ReadFile("./README.md")
 	if err != nil {
 		t.Fatalf("Failed to load markdown file: %v", err)
 	}
