@@ -1,10 +1,10 @@
 package main
 
 import (
-	"regexp"
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"strings"
 	"sync"
 	"testing"
@@ -67,7 +67,7 @@ func TestReadmeHeaders(t *testing.T) {
 	requiredHeaders := []string{"## Goals", "## Features"}
 
 	for _, header := range requiredHeaders {
-		match, _ := regexp.MatchString("(?m)^" + regexp.QuoteMeta(header) + "$", contents)
+		match, _ := regexp.MatchString("(?m)^"+regexp.QuoteMeta(header)+"$", contents)
 		if !match {
 			t.Errorf("Failed: README.md does not contain required header: %s", header)
 		} else {
@@ -78,6 +78,13 @@ func TestReadmeHeaders(t *testing.T) {
 
 func TestReadmeNotEmpty(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
+
+	if _, err := os.Stat(readmePath); os.IsNotExist(err) {
+		t.Fatalf("Failed: README.md does not exist.")
+	} else {
+		t.Log("Success: README.md file exists.")
+	}
+
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
 		t.Fatalf("Failed to load markdown file: %v", err)
