@@ -64,26 +64,28 @@ func TestReadmeHeaders(t *testing.T) {
 	}
 
 	contents := string(data)
-
 	requiredHeaders := []string{"## Goals", "## Features"}
 
-	// Split the content into lines
-	lines := strings.Split(contents, "\n")
-
 	for _, header := range requiredHeaders {
-		found := false
-		for _, line := range lines {
-			match, _ := regexp.MatchString("^" + regexp.QuoteMeta(header) + "$", line)
-			if match {
-				found = true
-				break
-			}
-		}
-
-		if !found {
-			t.Errorf("README.md does not contain required header: %s", header)
+		match, _ := regexp.MatchString("(?m)^" + regexp.QuoteMeta(header) + "$", contents)
+		if !match {
+			t.Errorf("Failed: README.md does not contain required header: %s", header)
 		} else {
 			t.Logf("Success: README.md contains required header: %s", header)
 		}
+	}
+}
+
+func TestReadmeNotEmpty(t *testing.T) {
+	readmePath := os.Getenv("README_PATH")
+	data, err := os.ReadFile(readmePath)
+	if err != nil {
+		t.Fatalf("Failed to load markdown file: %v", err)
+	}
+
+	if len(data) == 0 {
+		t.Errorf("Failed: README.md is empty.")
+	} else {
+		t.Log("Success: README.md is not empty.")
 	}
 }
