@@ -62,7 +62,10 @@ jobs:
     name: tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: global
 
       - name: setup go
         uses: actions/setup-go@v3
@@ -70,8 +73,8 @@ jobs:
           check-latest: true
 
       - name: fetch go modules
-        working-directory: tests
+        working-directory: global/tests
         run: go mod download
 
       - name: run global tests
-        run: go test -v ./tests/...
+        run: go test -v ./global/tests/...
