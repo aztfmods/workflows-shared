@@ -12,7 +12,7 @@ import (
 )
 
 func TestURLs(t *testing.T) {
-	readmePath := os.Getenv("README_PATH")
+	readmePath := os.Getenv("GITHUB_WORKSPACE") + "/README.md"
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
 		t.Fatalf("Failed to load markdown file: %v", err)
@@ -54,4 +54,3 @@ func TestURLs(t *testing.T) {
 	}
 	wg.Wait()
 }
-
