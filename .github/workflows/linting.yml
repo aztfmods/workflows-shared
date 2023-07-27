@@ -80,3 +80,5 @@ jobs:
       - name: run global tests
         working-directory: global/tests
         run: go test -v ./...
+        env:
+          README_PATH: "${{ github.workspace }}/README.md"
