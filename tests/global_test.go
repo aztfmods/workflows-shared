@@ -64,12 +64,15 @@ func TestReadmeHeaders(t *testing.T) {
 	}
 
 	contents := string(data)
-	requiredHeaders := []string{"## Goals", "## Features"}
+	requiredHeaders := []string{"## Goals", "## Features", "## Usage"}
 
 	for _, header := range requiredHeaders {
-		match, _ := regexp.MatchString("(?m)^"+regexp.QuoteMeta(header)+"$", contents)
-		if !match {
+		r, _ := regexp.Compile("(?m)^" + regexp.QuoteMeta(header) + "$")
+		matches := r.FindAllString(contents, -1)
+		if len(matches) == 0 {
 			t.Errorf("Failed: README.md does not contain required header: %s", header)
+		} else if header == "## Usage" && len(matches) <= 1 {
+			t.Errorf("Failed: README.md should contain '%s' more than once, but found %d instance(s)", header, len(matches))
 		} else {
 			t.Logf("Success: README.md contains required header: %s", header)
 		}
