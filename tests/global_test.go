@@ -79,16 +79,12 @@ func TestReadmeHeaders(t *testing.T) {
 func TestReadmeNotEmpty(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
 
-	if _, err := os.Stat(readmePath); os.IsNotExist(err) {
-		t.Fatalf("Failed: README.md does not exist.")
-	} else {
-		t.Log("Success: README.md file exists.")
-	}
-
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
-		t.Fatalf("Failed to load markdown file: %v", err)
+		t.Fatalf("Failed: Cannot access README.md: %v", err)
 	}
+
+	t.Log("Success: README.md file exists.")
 
 	if len(data) == 0 {
 		t.Errorf("Failed: README.md is empty.")
