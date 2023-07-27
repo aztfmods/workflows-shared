@@ -74,8 +74,9 @@ jobs:
           check-latest: true
 
       - name: fetch go modules
-        working-directory: global/tests
+        working-directory: global
         run: go mod download
 
       - name: run global tests
-        run: go test -v ./global/tests/...
+        working-directory: global
+        run: go test -v ./tests/...
