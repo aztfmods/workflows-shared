@@ -105,18 +105,18 @@ func TestReadmeNotEmpty(t *testing.T) {
 }
 
 func TestResourceTableHeaders(t *testing.T) {
-	TestMarkdownTableHeaders(t, "Resources", []string{"Name", "Type"})
+	markdownTableHeaders(t, "Resources", []string{"Name", "Type"})
 }
 
 func TestInputsTableHeaders(t *testing.T) {
-	TestMarkdownTableHeaders(t, "Inputs", []string{"Name", "Description", "Type", "Required"})
+	markdownTableHeaders(t, "Inputs", []string{"Name", "Description", "Type", "Required"})
 }
 
 func TestOutputsTableHeaders(t *testing.T) {
-	TestMarkdownTableHeaders(t, "Outputs", []string{"Name", "Description"})
+	markdownTableHeaders(t, "Outputs", []string{"Name", "Description"})
 }
 
-func TestMarkdownTableHeaders(t *testing.T, header string, columns []string) {
+func markdownTableHeaders(t *testing.T, header string, columns []string) {
 	readmePath := os.Getenv("README_PATH")
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
