@@ -13,15 +13,15 @@ import (
 )
 
 func TestMarkdown(t *testing.T) {
-    t.Run("URLs", TestURLs)
-    t.Run("Headers", TestReadmeHeaders)
-    t.Run("NotEmpty", TestReadmeNotEmpty)
-    t.Run("ResourceTableHeaders", TestResourceTableHeaders)
-    t.Run("InputsTableHeaders", TestInputsTableHeaders)
-    t.Run("OutputsTableHeaders", TestOutputsTableHeaders)
+    t.Run("URLs", validateURLs)
+    t.Run("Headers", validateReadmeHeaders)
+    t.Run("NotEmpty", validateReadmeNotEmpty)
+    t.Run("ResourceTableHeaders", validateResourceTableHeaders)
+    t.Run("InputsTableHeaders", validateInputsTableHeaders)
+    t.Run("OutputsTableHeaders", validateOutputsTableHeaders)
 }
 
-func TestURLs(t *testing.T) {
+func validateURLs(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
@@ -65,7 +65,7 @@ func TestURLs(t *testing.T) {
 	wg.Wait()
 }
 
-func TestReadmeHeaders(t *testing.T) {
+func validateReadmeHeaders(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
 	data, err := os.ReadFile(readmePath)
 	if err != nil {
@@ -96,7 +96,7 @@ func TestReadmeHeaders(t *testing.T) {
 	}
 }
 
-func TestReadmeNotEmpty(t *testing.T) {
+func validateReadmeNotEmpty(t *testing.T) {
 	readmePath := os.Getenv("README_PATH")
 
 	data, err := os.ReadFile(readmePath)
@@ -113,15 +113,15 @@ func TestReadmeNotEmpty(t *testing.T) {
 	}
 }
 
-func TestResourceTableHeaders(t *testing.T) {
+func validateResourceTableHeaders(t *testing.T) {
 	markdownTableHeaders(t, "Resources", []string{"Name", "Type"})
 }
 
-func TestInputsTableHeaders(t *testing.T) {
+func validateInputsTableHeaders(t *testing.T) {
 	markdownTableHeaders(t, "Inputs", []string{"Name", "Description", "Type", "Required"})
 }
 
-func TestOutputsTableHeaders(t *testing.T) {
+func validateOutputsTableHeaders(t *testing.T) {
 	markdownTableHeaders(t, "Outputs", []string{"Name", "Description"})
 }
 
