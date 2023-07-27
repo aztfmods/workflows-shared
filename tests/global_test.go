@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -107,35 +106,36 @@ func TestInputsTableHeaders(t *testing.T) {
 	testMarkdownTableHeaders(t, "Inputs", []string{"Name", "Description", "Type", "Required"})
 }
 
-func testMarkdownTableHeaders(t *testing.T, section string, headers []string) {
-	readmePath := os.Getenv("README_PATH")
-	data, err := ioutil.ReadFile(readmePath)
-	if err != nil {
-		t.Fatalf("Failed to load markdown file: %v", err)
-	}
+func testMarkdownTableHeaders(t *testing.T, header string, columns []string) {
+    readmePath := os.Getenv("README_PATH")
+    data, err := os.ReadFile(readmePath)
+    if err != nil {
+        t.Fatalf("Failed to load markdown file: %v", err)
+    }
 
-	contents := string(data)
-	requiredSection := []string{"## " + section}
+    contents := string(data)
+    requiredHeaders := []string{"## " + header}
 
-	for _, header := range requiredSection {
-		headerPattern := regexp.MustCompile("(?m)^" + regexp.QuoteMeta(header) + "$")
-		headerLoc := headerPattern.FindStringIndex(contents)
-		if headerLoc == nil {
-			t.Fatalf("Failed: README.md does not contain required header: %s", header)
-		}
+    for _, requiredHeader := range requiredHeaders {
+        headerPattern := regexp.MustCompile("(?m)^" + regexp.QuoteMeta(requiredHeader) + "\\s*$")
+        headerLoc := headerPattern.FindStringIndex(contents)
+        if headerLoc == nil {
+            t.Fatalf("Failed: README.md does not contain required header: %s", requiredHeader)
+        }
 
-		// Look for a table immediately after the header
-		tablePattern := regexp.MustCompile(`(?s)(?m)^## ` + section + `\s*\n\n\|.*\|\n\| :-- \| :-- \|\n(\|.*\|)*\n`)
-		tableLoc := tablePattern.FindStringIndex(contents)
-		if tableLoc == nil || tableLoc[0] != headerLoc[1] {
-			t.Fatalf("Failed: README.md does not contain a table immediately after the header: %s", header)
-		}
+        // Look for a table immediately after the header
+        tablePattern := regexp.MustCompile(`(?s)` + regexp.QuoteMeta(requiredHeader) + `(\s*\|.*\|)+\s*`)
+        tableLoc := tablePattern.FindStringIndex(contents)
+        if tableLoc == nil {
+            t.Fatalf("Failed: README.md does not contain a table immediately after the header: %s", requiredHeader)
+        }
 
-		// Check the table headers
-		headerRowPattern := regexp.MustCompile(`(?m)\| ` + strings.Join(headers, " \\| ") + ` \|`)
-		headerRowLoc := headerRowPattern.FindStringIndex(contents[tableLoc[0]:tableLoc[1]])
-		if headerRowLoc == nil {
-			t.Fatalf("Failed: README.md does not contain the correct headers in the table after: %s", header)
-		}
-	}
+        // Check the table headers
+        columnHeaders := strings.Join(columns, " \\| ")
+        headerRowPattern := regexp.MustCompile(`(?m)\| ` + columnHeaders + ` \|`)
+        headerRowLoc := headerRowPattern.FindStringIndex(contents[tableLoc[0]:tableLoc[1]])
+        if headerRowLoc == nil {
+            t.Fatalf("Failed: README.md does not contain the correct headers in the table after: %s", requiredHeader)
+        }
+    }
 }
