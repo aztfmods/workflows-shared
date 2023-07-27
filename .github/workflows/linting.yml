@@ -65,6 +65,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
         with:
+          repository: aztfmods/workflows-shared
           path: global
 
       - name: setup go
