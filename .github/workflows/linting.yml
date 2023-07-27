@@ -57,3 +57,21 @@ jobs:
       - name: terraform fmt
         run: terraform fmt -check -recursive
         continue-on-error: false
+
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: setup go
+        uses: actions/setup-go@v3
+        with:
+          check-latest: true
+
+      - name: fetch go modules
+        working-directory: tests
+        run: go mod download
+
+      - name: run global tests
+        run: go test -v ./tests/...
