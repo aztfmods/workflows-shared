@@ -67,9 +67,20 @@ func TestReadmeHeaders(t *testing.T) {
 
 	requiredHeaders := []string{"## Goals", "## Features"}
 
+	// Split the content into lines
+	lines := strings.Split(contents, "\n")
+
 	for _, header := range requiredHeaders {
-		match, _ := regexp.MatchString(header, contents)
-		if !match {
+		found := false
+		for _, line := range lines {
+			match, _ := regexp.MatchString("^" + regexp.QuoteMeta(header) + "$", line)
+			if match {
+				found = true
+				break
+			}
+		}
+
+		if !found {
 			t.Errorf("README.md does not contain required header: %s", header)
 		} else {
 			t.Logf("Success: README.md contains required header: %s", header)
