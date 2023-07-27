@@ -62,7 +62,7 @@ jobs:
     name: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
+      - name: check out called repo
         uses: actions/checkout@v2
         with:
           repository: aztfmods/workflows-shared
@@ -77,7 +77,7 @@ jobs:
         working-directory: global/tests
         run: go mod download
 
-      - name: Check out caller repo
+      - name: check out caller repo
         uses: actions/checkout@v2
         with:
           repository: ${{ github.repository }}
