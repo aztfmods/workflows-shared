@@ -74,7 +74,7 @@ jobs:
           check-latest: true
 
       - name: fetch go modules
-        working-directory: workflows-shared/tests
+        working-directory: called/tests
         run: go mod download
 
       - name: check out caller repo
