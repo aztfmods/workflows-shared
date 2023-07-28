@@ -58,34 +58,34 @@ jobs:
         run: terraform fmt -check -recursive
         continue-on-error: false
 
-tests:
-  name: tests
-  runs-on: ubuntu-latest
-  steps:
-    - name: check out called repo
-      uses: actions/checkout@v3
-      with:
-        repository: aztfmods/workflows-shared
-        path: workflows-shared
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: check out called repo
+        uses: actions/checkout@v3
+        with:
+          repository: aztfmods/workflows-shared
+          path: workflows-shared
 
-    - name: setup go
-      uses: actions/setup-go@v3
-      with:
-        check-latest: true
+      - name: setup go
+        uses: actions/setup-go@v3
+        with:
+          check-latest: true
 
-    - name: fetch go modules
-      working-directory: workflows-shared/tests
-      run: go mod download
+      - name: fetch go modules
+        working-directory: workflows-shared/tests
+        run: go mod download
 
-    - name: check out caller repo
-      uses: actions/checkout@v2
-      with:
-        repository: ${{ github.repository }}
-        ref: ${{ github.head_ref }}
-        path: repo
+      - name: check out caller repo
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.head_ref }}
+          path: repo
 
-    - name: run global tests
-      working-directory: workflows-shared/tests
-      run: go test -v ./...
-      env:
-        README_PATH: "${{ github.workspace }}/repo/README.md"
+      - name: run global tests
+        working-directory: workflows-shared/tests
+        run: go test -v ./...
+        env:
+          README_PATH: "${{ github.workspace }}/repo/README.md"
