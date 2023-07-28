@@ -84,6 +84,15 @@ jobs:
           ref: ${{ github.head_ref || github.ref }}
           path: caller
 
+      - name: Print README contents
+        working-directory: caller
+        run: cat README.md
+
+      - name: Print Workspace and README_PATH
+        run: |
+          echo "Workspace: ${{ github.workspace }}"
+          echo "README_PATH: ${{ github.workspace }}/caller/README.md"
+
       - name: run global tests
         working-directory: global/tests
         run: go test -v ./...
