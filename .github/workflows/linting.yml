@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: aztfmods/workflows-shared
-          path: workflows-shared
+          path: called
 
       - name: setup go
         uses: actions/setup-go@v3
@@ -82,10 +82,10 @@ jobs:
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.head_ref }}
-          path: repo
+          path: caller
 
       - name: run global tests
         working-directory: workflows-shared/tests
         run: go test -v ./...
         env:
-          README_PATH: "${{ github.workspace }}/repo/README.md"
+          README_PATH: "${{ github.workspace }}/caller/README.md"
