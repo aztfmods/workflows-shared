@@ -72,3 +72,6 @@ jobs:
             make test USECASE=${{ inputs.test }}
           fi
 
+# TODO: test this
+#- name: run tests
+#  run: make ${ {inputs.test} } USECASE=${ {inputs.test_extended} && "test_extended" }
