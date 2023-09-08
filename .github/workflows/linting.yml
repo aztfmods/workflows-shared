@@ -39,7 +39,7 @@ jobs:
     name: linting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - uses: terraform-linters/setup-tflint@v3
         name: Setup TFLint
@@ -53,7 +53,7 @@ jobs:
     name: deployment
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: setup terraform
         uses: hashicorp/setup-terraform@v2
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: check out called repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: aztfmods/workflows-shared
           path: called
@@ -90,7 +90,7 @@ jobs:
         run: go mod download
 
       - name: check out caller repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}
           ref: ${{ github.head_ref }}
